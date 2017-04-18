@@ -74,6 +74,34 @@
         /*ESTILOS SUPERVISOR*/
         #supervisor { display: table-cell; vertical-align: middle; text-align: center; border-radius: 100px; width: 25px; height: 20px; padding: 0.5em; background:cornflowerblue; border: solid 1px black;}
 
+
+        /*ESTILOS SORTABLE*/
+
+        #departamentos {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        #departamentos li {
+            padding: 0.4em;
+            padding-left: 1.5em;
+        }
+        .departamento {
+            background: #cedc98;
+            border: 1px solid #DDDDDD;
+            color: #333333;
+        }
+        #lista_departamentos{
+            background: lightpink;
+            border: 1px solid #DDDDDD;
+            color: #333333;
+            height: 140px;
+            width: 160px;
+        }
+        #lista_departamentos ul{
+            padding: 5px;
+        }
+
     </style>
     <script>
         $(function() {
@@ -84,9 +112,16 @@
             });
             $( ".vigilante" ).draggable({
             });
+            $( "#lista_departamentos" ).draggable({
+                revert: "valid"
+            });
 
 
             // Droppables
+
+            $( "#centro_comercial" ).droppable({
+
+            });
             $( "#punto_vigilancia" ).droppable({
                 drop: function(event, ui)
                 {
@@ -126,8 +161,12 @@
                 {
                     $(this).css("background-color", "red");
                 },
-
                 tolerance: "pointer"
+            });
+
+            //Sortable
+            $(function() {
+                $( "#departamentos" ).sortable();
             });
         });
     </script>
@@ -143,6 +182,15 @@
             <div id="punto_supervision">Punto Supervision</div>
         </div>
         <div id="almacen"></div>
+    </div>
+
+    <div id="lista_departamentos">
+        <ul id = "departamentos">
+            <li class = "departamento">Alimentacion</li>
+            <li class = "departamento">Limpieza</li>
+            <li class = "departamento">Electronica</li>
+            <li class = "departamento">Ropa</li>
+        </ul>
     </div>
 </div>
 </body>
