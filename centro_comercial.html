@@ -80,7 +80,7 @@
 
             //Draggables
             $( "#supervisor" ).draggable({
-                containment : "#centro_comercial",
+                containment : "#centro_comercial"
             });
             $( ".vigilante" ).draggable({
             });
@@ -88,13 +88,17 @@
 
             // Droppables
             $( "#punto_vigilancia" ).droppable({
-                drop: function()
+                drop: function(event, ui)
                 {
-                    $(this).css("background-color", "green");
+                    if (ui.draggable.attr('class') != null && ui.draggable.attr('class').includes('vigilante')){
+                        $(this).css("background-color", "green");
+                    }
                 },
-                over: function()
+                over: function(event, ui)
                 {
-                    $(this).css("background-color", "green");
+                    if (ui.draggable.attr('class') != null && ui.draggable.attr('class').includes('vigilante')){
+                        $(this).css("background-color", "green");
+                    }
                 },
                 out: function()
                 {
@@ -106,13 +110,17 @@
 
 
             $( "#punto_supervision" ).droppable({
-                drop: function()
+                drop: function(event, ui)
                 {
-                    $(this).css("background-color", "green");
+                    if (ui.draggable.attr('id') != null && ui.draggable.attr('id').includes('supervisor')){
+                        $(this).css("background-color", "green");
+                    }
                 },
-                over: function()
+                over: function(event, ui)
                 {
-                    $(this).css("background-color", "green");
+                    if (ui.draggable.attr('id') != null && ui.draggable.attr('id').includes('supervisor')){
+                        $(this).css("background-color", "green");
+                    }
                 },
                 out: function()
                 {
