@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Vigilancia</title>
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel = "stylesheet">
+    <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <style>
+
+        #contenedor {
+            width: 1200px;
+            height: 900px;
+        }
+
+        #centro_comercial{
+            width: inherit;
+            height: 400px;
+        }
+
+        /*ESTILOS VENTAS*/
+        #ventas{
+            float: left;
+            border: solid black 1px;
+            width: 49%;
+            height: 400px;
+        }
+
+
+        #punto_vigilancia {
+            position: relative;
+
+            width: 120px;
+            height: 50px;
+
+            top: 110px;
+            left: -242px;
+
+            z-index: -1;
+
+            padding: 0.5em;
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            background: red;
+            border: solid 1px black;
+        }
+
+
+        #punto_supervision{
+
+            position: relative;
+            top: 110px;
+            left: 70px;
+            z-index: -1;
+            width: 120px;
+            height: 50px;
+            padding: 0.5em;
+            display: table-cell; vertical-align: middle; text-align: center; background:red; border: solid 1px black;
+        }
+
+        /*ESTILOS ALMACEN*/
+        #almacen {
+            float: left;
+            border: solid black 1px;
+            width: 49%;
+            height: 400px;
+        }
+
+        /*ESTILOS VIGILANTES*/
+        .vigilante { display: table-cell; vertical-align: middle; text-align: center; border-radius: 100px; width: 25px; height: 20px; padding: 0.5em; background:orange; border: solid 1px black;}
+
+        /*ESTILOS SUPERVISOR*/
+        #supervisor { display: table-cell; vertical-align: middle; text-align: center; border-radius: 100px; width: 25px; height: 20px; padding: 0.5em; background:cornflowerblue; border: solid 1px black;}
+
+    </style>
+    <script>
+        $(function() {
+
+            //Draggables
+            $( "#supervisor" ).draggable({
+                containment : "#centro_comercial",
+            });
+            $( ".vigilante" ).draggable({
+            });
+
+
+            // Droppables
+            $( "#punto_vigilancia" ).droppable({
+                drop: function()
+                {
+                    $(this).css("background-color", "green");
+                },
+                over: function()
+                {
+                    $(this).css("background-color", "green");
+                },
+                out: function()
+                {
+                    $(this).css("background-color", "red");
+                },
+
+                tolerance: "pointer"
+            });
+
+
+            $( "#punto_supervision" ).droppable({
+                drop: function()
+                {
+                    $(this).css("background-color", "green");
+                },
+                over: function()
+                {
+                    $(this).css("background-color", "green");
+                },
+                out: function()
+                {
+                    $(this).css("background-color", "red");
+                },
+
+                tolerance: "pointer"
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="contenedor">
+    <div id="centro_comercial">
+        <div id="ventas">
+            <div id = "supervisor">Supervisor</div>
+            <div class="vigilante">Vigilante</div>
+            <div class="vigilante">Vigilante</div>
+            <div id="punto_vigilancia">Punto Vigilancia</div>
+            <div id="punto_supervision">Punto Supervision</div>
+        </div>
+        <div id="almacen"></div>
+    </div>
+</div>
+</body>
+</html>
