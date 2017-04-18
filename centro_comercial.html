@@ -123,21 +123,40 @@
 
             });
             $( "#punto_vigilancia" ).droppable({
-                drop: function(event, ui)
-                {
-                    if (ui.draggable.attr('class') != null && ui.draggable.attr('class').includes('vigilante')){
-                        $(this).css("background-color", "green");
-                    }
-                },
                 over: function(event, ui)
                 {
+                    // Comprobamos que el elemento es el vigilante.
                     if (ui.draggable.attr('class') != null && ui.draggable.attr('class').includes('vigilante')){
+                        // Incrementamos en uno el contador  de vigilantes vigilando ya que despues comprobaremos que todos los vigilantes
+                        // esten fuera para volver a poner el puesto de vigilancia a rojo (Solo incrementaremos si el vigilante no estaba vigilando).
+                        if ($(ui.draggable).attr('vigilando') == "no"){
+                            var incrementoContador = parseInt($(this).attr('contador')) + 1;
+                            $(this).attr('contador', incrementoContador);
+                        }
+
+                        // Ponemos el puesto de vigilancia a verde ya que tenemos vigilantes dentro.
                         $(this).css("background-color", "green");
+
+                        // Indicamos el vigilante esta vigilando.
+                        $(ui.draggable).attr('vigilando', 'si');
                     }
                 },
-                out: function()
+                out: function(event, ui)
                 {
-                    $(this).css("background-color", "red");
+                    // Comprobamos que el elemento es el vigilante.
+                    if ((ui.draggable.attr('class') != null) && (ui.draggable.attr('class').includes('vigilante'))){
+                        if($(this).attr('contador') == 1){
+                            $(this).css("background-color", "red");
+                        }
+
+                        // Decrementamos en uno el contador ya que despues comprobaremos que todos los vigilantes esten fuera
+                        // para volver a poner el puesto de vigilancia a rojo.
+                        var incrementoContador = parseInt($(this).attr('contador')) - 1;
+                        $(this).attr('contador', incrementoContador);
+
+                        // Indicamos el vigilante no esta vigilando.
+                        $(ui.draggable).attr('vigilando', 'no');
+                    }
                 },
 
                 tolerance: "pointer"
@@ -145,21 +164,21 @@
 
 
             $( "#punto_supervision" ).droppable({
-                drop: function(event, ui)
-                {
-                    if (ui.draggable.attr('id') != null && ui.draggable.attr('id').includes('supervisor')){
-                        $(this).css("background-color", "green");
-                    }
-                },
                 over: function(event, ui)
                 {
+                    // Comprobamos que el elemento es el supervisor y si es asi ponemos el puesto de supervision
+                    // a verde ya que tenemos al supervisor dentro.
                     if (ui.draggable.attr('id') != null && ui.draggable.attr('id').includes('supervisor')){
                         $(this).css("background-color", "green");
                     }
                 },
-                out: function()
+                out: function(event, ui)
                 {
-                    $(this).css("background-color", "red");
+                    // Comprobamos que el elemento es el supervisor y si es asi ponemos el puesto de supervision
+                    // a rojo ya que el supervisor ha dejado de supervisar.
+                    if (ui.draggable.attr('id') != null && ui.draggable.attr('id').includes('supervisor')){
+                        $(this).css("background-color", "red");
+                    }
                 },
                 tolerance: "pointer"
             });
@@ -176,9 +195,9 @@
     <div id="centro_comercial">
         <div id="ventas">
             <div id = "supervisor">Supervisor</div>
-            <div class="vigilante">Vigilante</div>
-            <div class="vigilante">Vigilante</div>
-            <div id="punto_vigilancia">Punto Vigilancia</div>
+            <div class="vigilante" vigilando="no">Vigilante</div>
+            <div class="vigilante" vigilando="no">Vigilante</div>
+            <div id="punto_vigilancia" contador="0">Punto Vigilancia</div>
             <div id="punto_supervision">Punto Supervision</div>
         </div>
         <div id="almacen"></div>
