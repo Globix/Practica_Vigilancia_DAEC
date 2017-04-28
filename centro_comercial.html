@@ -129,6 +129,12 @@
             padding: 5px;
         }
 
+        /* ESTILOS MENU */
+
+        .ui-menu {
+            width: 200px;
+        }
+
     </style>
     <script>
     var todasPuertasCerradas = function(){
@@ -152,7 +158,8 @@
             $( "#lista_departamentos" ).draggable({
                 revert: "valid"
             });
-
+            $( ".panelPuertas" ).draggable({
+            });
 
             // Droppables
 
@@ -160,6 +167,7 @@
 
             });
             $( "#punto_vigilancia" ).droppable({
+                tolerance: 'fit',
                 drop: function(event, ui)
                 {
                     if (ui.draggable.attr('class') != null && ui.draggable.attr('class').includes('vigilante')){
@@ -200,10 +208,10 @@
                         // Indicamos el vigilante no esta vigilando.
                         $(ui.draggable).attr('vigilando', 'no');
                     }
-                },
-                tolerance: "pointer"
+                }
             });
             $( "#punto_supervision" ).droppable({
+                tolerance: 'fit',
                 drop: function(event, ui)
                 {
                     if (ui.draggable.attr('id') != null && ui.draggable.attr('id').includes('supervisor')){
@@ -225,8 +233,7 @@
                     if (ui.draggable.attr('id') != null && ui.draggable.attr('id').includes('supervisor')){
                         $(this).css("background-color", "red");
                     }
-                },
-                tolerance: "pointer"
+                }
             });
             $( function() {
     $( ".pVentas" ).slider({
@@ -270,6 +277,11 @@ stoped=false}
             $(function() {
                 $( "#departamentos" ).sortable();
             });
+
+            //Menu
+            $(function() {
+                $( "#panel_Puertas" ).menu();
+            });
         });
     </script>
 </head>
@@ -295,25 +307,36 @@ stoped=false}
             <li class = "departamento">Ropa</li>
         </ul>
     </div>
+<div class="panelDeMensajes"><h3 class="txtPanelDeMensajes"></h3></div>
+<div class="panelPuertas">
+    <h2>Controlador de Puertas</h2>
+    <ul id="panel_Puertas">
+        <li>
+            <a href="#">Puerta Ventas</a>
+            <ul>
+                <li onclick=' $(".pVentas .ui-slider-range").animate({height: "100%"});$(".pVentas .ui-slider-handle").animate({bottom: "100%"});todasPuertasCerradas()'><a href = "#">Abrir</a></li>
+                <li onclick=' $(".pVentas .ui-slider-range").animate({height: "0"});$(".pVentas .ui-slider-handle").animate({bottom: "0"});alerting=false;todasPuertasCerradas()'><a href = "#">Cerrar</a></li>
+                <li onclick=' $(".pVentas .ui-slider-range").stop();$(".pVentas .ui-slider-handle").stop()'><a href = "#">STOP</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Puerta Interior</a>
+            <ul>
+                <li onclick=' $(".ppInterior").hide();todasPuertasCerradas()'><a href = "#">Abrir</a></li>
+                <li onclick=' $(".ppInterior").show();alerting=false;todasPuertasCerradas()'><a href = "#">Cerrar</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Puerta Almacen</a>
+            <ul>
+                <li onclick=' $(".ppAlmacen").fadeOut("slow");todasPuertasCerradas()'><a href = "#">Abrir</a></li>
+                <li onclick =' $(".ppAlmacen").fadeIn("slow");alerting=false;todasPuertasCerradas(); '><a href = "#">Cerrar</a></li>
+                <li onclick =' $(".ppAlmacen").stop()'><a href = "#">STOP</a></li>
+            </ul>
+        </li>
+    </ul>
 
-    <div class="panelDeMensajes"><h3 class="txtPanelDeMensajes"></h3></div>
-    <div class="panelPuertas"><h2>Controlador de Puertas</h2>
-<div>
-<h3>Puerta Almacen</h3>
-<button onclick=' $(".ppAlmacen").fadeOut("slow");todasPuertasCerradas()'>abrir</button>
-<button onclick=' $(".ppAlmacen").fadeIn("slow");todasPuertasCerradas();'>cerrar</button>
-<button onclick='$(".ppAlmacen").stop()'>STOP</button>
 </div>
-<div>
-<h3>Puerta Ventas</h3>
-<button onclick=' $(".pVentas .ui-slider-range").animate({height: "100%"});$(".pVentas .ui-slider-handle").animate({bottom: "100%"});todasPuertasCerradas()'>abrir</button>
-<button onclick=' $(".pVentas .ui-slider-range").animate({height: "0"});$(".pVentas .ui-slider-handle").animate({bottom: "0"});todasPuertasCerradas()'>cerrar</button>
-<button onclick=' $(".pVentas .ui-slider-range").stop();$(".pVentas .ui-slider-handle").stop()'>STOP</button>
 </div>
-<div>
-<h3>Puerta Interior</h3>
-<button onclick=' $(".ppInterior").hide();todasPuertasCerradas()'>abrir</button>
-<button onclick=' $(".ppInterior").show();todasPuertasCerradas()'>cerrar</button>
-</div></div></div>
 </body>
 </html>
