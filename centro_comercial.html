@@ -131,15 +131,17 @@
 
     </style>
     <script>
-    var alerting=false;
     var todasPuertasCerradas = function(){
         setTimeout(function(){
 
-        if($( ".pVentas .ui-slider-range" ).css("height")=="0px" && $(".ppInterior").css("display") == "block" && $(".ppAlmacen").css("display")=="block" && $(".ppAlmacen").css("opacity")=="1" && alerting==false){
-            alerting=true;
-            alert("todas las puertas estan cerradas");
-        }}, 600);
-    }
+        if($( ".pVentas .ui-slider-range").css("height").match(/\d+/)[0] < 5  && $(".ppInterior").css("display") == "block" && $(".ppAlmacen").css("display")=="block" && $(".ppAlmacen").css("opacity")=="1"){
+            document.getElementsByClassName("txtPanelDeMensajes")[0].innerHTML="todas las puertas estan cerradas";
+        }
+        else {
+          document.getElementsByClassName("txtPanelDeMensajes")[0].innerHTML="";
+        }
+        }, 600);
+    };
         $(function() {
             //Draggables
             $( "#supervisor" ).draggable({
@@ -236,28 +238,26 @@
       value: 60,
        slide: function( event, ui ) {
         todasPuertasCerradas();
-        alerting=false;
       }
     });
     $(".pInterior").click(function(){
-        alerting=false;
         if($(".ppInterior").css("display")!="none"){
             $(".ppInterior").hide();}
         else{
             $(".ppInterior").show();
-            todasPuertasCerradas();
+
         }
+        todasPuertasCerradas();
     });
     var stoped= false;
     $(".pAlmacen").click(function(){
-        alerting=false;
         if($(".ppAlmacen").css("opacity")== 0||$(".ppAlmacen").css("opacity")== 1 || stoped==true){
         if($(".ppAlmacen").css("display")!="none"){
     $(".ppAlmacen").fadeOut("slow");}
     else{
         $(".ppAlmacen").fadeIn("slow");
-        todasPuertasCerradas();
     }
+            todasPuertasCerradas();
 stoped=false}
     else{
         $(".ppAlmacen").stop();
@@ -295,23 +295,25 @@ stoped=false}
             <li class = "departamento">Ropa</li>
         </ul>
     </div>
+
+    <div class="panelDeMensajes"><h3 class="txtPanelDeMensajes"></h3></div>
     <div class="panelPuertas"><h2>Controlador de Puertas</h2>
 <div>
 <h3>Puerta Almacen</h3>
-<button onclick=' $(".ppAlmacen").fadeOut("slow")'>abrir</button>
-<button onclick=' $(".ppAlmacen").fadeIn("slow");alerting=false;todasPuertasCerradas();'>cerrar</button>
+<button onclick=' $(".ppAlmacen").fadeOut("slow");todasPuertasCerradas()'>abrir</button>
+<button onclick=' $(".ppAlmacen").fadeIn("slow");todasPuertasCerradas();'>cerrar</button>
 <button onclick='$(".ppAlmacen").stop()'>STOP</button>
 </div>
 <div>
 <h3>Puerta Ventas</h3>
-<button onclick=' $(".pVentas .ui-slider-range").animate({height: "100%"});$(".pVentas .ui-slider-handle").animate({bottom: "100%"})'>abrir</button>
-<button onclick=' $(".pVentas .ui-slider-range").animate({height: "0"});$(".pVentas .ui-slider-handle").animate({bottom: "0"});alerting=false;todasPuertasCerradas()'>cerrar</button>
+<button onclick=' $(".pVentas .ui-slider-range").animate({height: "100%"});$(".pVentas .ui-slider-handle").animate({bottom: "100%"});todasPuertasCerradas()'>abrir</button>
+<button onclick=' $(".pVentas .ui-slider-range").animate({height: "0"});$(".pVentas .ui-slider-handle").animate({bottom: "0"});todasPuertasCerradas()'>cerrar</button>
 <button onclick=' $(".pVentas .ui-slider-range").stop();$(".pVentas .ui-slider-handle").stop()'>STOP</button>
 </div>
 <div>
 <h3>Puerta Interior</h3>
-<button onclick=' $(".ppInterior").hide()'>abrir</button>
-<button onclick=' $(".ppInterior").show();alerting=false;todasPuertasCerradas()'>cerrar</button>
+<button onclick=' $(".ppInterior").hide();todasPuertasCerradas()'>abrir</button>
+<button onclick=' $(".ppInterior").show();todasPuertasCerradas()'>cerrar</button>
 </div></div></div>
 </body>
 </html>
