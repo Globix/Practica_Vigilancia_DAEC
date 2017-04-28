@@ -8,37 +8,29 @@
     <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <style>
-
         #contenedor {
             width: 1200px;
             height: 900px;
         }
-
         #centro_comercial{
             width: inherit;
             height: 400px;
         }
-
         /*ESTILOS VENTAS*/
         #ventas{
             float: left;
+                position: relative;
             border: solid black 1px;
             width: 49%;
             height: 400px;
         }
-
-
         #punto_vigilancia {
             position: relative;
-
             width: 120px;
             height: 50px;
-
             top: 110px;
             left: -242px;
-
             z-index: -1;
-
             padding: 0.5em;
             display: table-cell;
             vertical-align: middle;
@@ -46,10 +38,7 @@
             background: red;
             border: solid 1px black;
         }
-
-
         #punto_supervision{
-
             position: relative;
             top: 110px;
             left: 70px;
@@ -59,9 +48,9 @@
             padding: 0.5em;
             display: table-cell; vertical-align: middle; text-align: center; background:red; border: solid 1px black;
         }
-
         /*ESTILOS ALMACEN*/
         #almacen {
+                position: relative;
             float: left;
             border: solid black 1px;
             width: 49%;
@@ -69,10 +58,48 @@
         }
 
         /*ESTILOS VIGILANTES*/
-        .vigilante { display: table-cell; vertical-align: middle; text-align: center; border-radius: 100px; width: 25px; height: 20px; padding: 0.5em; background:orange; border: solid 1px black;}
-
+        .vigilante { display: table-cell; vertical-align: middle; text-align: center; border-radius: 100px; width: 25px; height: 20px; padding: 0.5em; background:orange; border: solid 1px black;    z-index: 2;}
         /*ESTILOS SUPERVISOR*/
-        #supervisor { display: table-cell; vertical-align: middle; text-align: center; border-radius: 100px; width: 25px; height: 20px; padding: 0.5em; background:cornflowerblue; border: solid 1px black;}
+        #supervisor { display: table-cell; vertical-align: middle; text-align: center; border-radius: 100px; width: 25px; height: 20px; padding: 0.5em; background:cornflowerblue; border: solid 1px black;    z-index: 2;}
+
+
+        /*zarpas ricardeñas metiendo estilos a las puertas*/
+        .puerta{
+            position: absolute;
+            display: inline-block;
+            min-width: 1rem;
+            min-height: 5rem;
+            background: white;
+            border-bottom: 1px solid black;
+            border-top: 1px solid black;
+        }
+          .pInterior {
+    left: -9px;
+    bottom: 5rem;
+}
+.pVentas {
+    left: -6px;
+    bottom: 5rem;
+}
+.pAlmacen {
+    right: -15px;
+    bottom: 5rem;
+}
+.ppAlmacen,.ppInterior{
+    background: black;
+    min-width: 5px;
+    min-height: 5rem;
+    pointer-events: none;
+}
+.panelPuertas{
+        position: absolute;
+    top: 0;
+    background: wheat;
+    right: 0;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    height: 7rem;
+}
 
 
         /*ESTILOS SORTABLE*/
@@ -104,8 +131,16 @@
 
     </style>
     <script>
-        $(function() {
+    var alerting=false;
+    var todasPuertasCerradas = function(){
+        setTimeout(function(){
 
+        if($( ".pVentas .ui-slider-range" ).css("height")=="0px" && $(".ppInterior").css("display") == "block" && $(".ppAlmacen").css("display")=="block" && $(".ppAlmacen").css("opacity")=="1" && alerting==false){
+            alerting=true;
+            alert("todas las puertas estan cerradas");
+        }}, 600);
+    }
+        $(function() {
             //Draggables
             $( "#supervisor" ).draggable({
                 containment : "#centro_comercial"
@@ -123,6 +158,12 @@
 
             });
             $( "#punto_vigilancia" ).droppable({
+                drop: function(event, ui)
+                {
+                    if (ui.draggable.attr('class') != null && ui.draggable.attr('class').includes('vigilante')){
+                        $(this).css("background-color", "green");
+                    }
+                },
                 over: function(event, ui)
                 {
                     // Comprobamos que el elemento es el vigilante.
@@ -158,12 +199,15 @@
                         $(ui.draggable).attr('vigilando', 'no');
                     }
                 },
-
                 tolerance: "pointer"
             });
-
-
             $( "#punto_supervision" ).droppable({
+                drop: function(event, ui)
+                {
+                    if (ui.draggable.attr('id') != null && ui.draggable.attr('id').includes('supervisor')){
+                        $(this).css("background-color", "green");
+                    }
+                },
                 over: function(event, ui)
                 {
                     // Comprobamos que el elemento es el supervisor y si es asi ponemos el puesto de supervision
@@ -182,6 +226,45 @@
                 },
                 tolerance: "pointer"
             });
+            $( function() {
+    $( ".pVentas" ).slider({
+      orientation: "vertical",
+      range: "min",
+      animate: "slow",
+      min: 0,
+      max: 100,
+      value: 60,
+       slide: function( event, ui ) {
+        todasPuertasCerradas();
+        alerting=false;
+      }
+    });
+    $(".pInterior").click(function(){
+        alerting=false;
+        if($(".ppInterior").css("display")!="none"){
+            $(".ppInterior").hide();}
+        else{
+            $(".ppInterior").show();
+            todasPuertasCerradas();
+        }
+    });
+    var stoped= false;
+    $(".pAlmacen").click(function(){
+        alerting=false;
+        if($(".ppAlmacen").css("opacity")== 0||$(".ppAlmacen").css("opacity")== 1 || stoped==true){
+        if($(".ppAlmacen").css("display")!="none"){
+    $(".ppAlmacen").fadeOut("slow");}
+    else{
+        $(".ppAlmacen").fadeIn("slow");
+        todasPuertasCerradas();
+    }
+stoped=false}
+    else{
+        $(".ppAlmacen").stop();
+        stoped=true;
+    }
+});
+  } );
 
             //Sortable
             $(function() {
@@ -194,13 +277,14 @@
 <div id="contenedor">
     <div id="centro_comercial">
         <div id="ventas">
+        <div class="puerta pVentas"></div>
             <div id = "supervisor">Supervisor</div>
             <div class="vigilante" vigilando="no">Vigilante</div>
             <div class="vigilante" vigilando="no">Vigilante</div>
             <div id="punto_vigilancia" contador="0">Punto Vigilancia</div>
             <div id="punto_supervision">Punto Supervision</div>
         </div>
-        <div id="almacen"></div>
+        <div id="almacen"><div class="puerta pInterior"><div class="ppInterior"></div></div><div class="puerta pAlmacen"><div class="ppAlmacen"></div></div></div>
     </div>
 
     <div id="lista_departamentos">
@@ -211,6 +295,23 @@
             <li class = "departamento">Ropa</li>
         </ul>
     </div>
+    <div class="panelPuertas"><h2>Controlador de Puertas</h2>
+<div>
+<h3>Puerta Almacen</h3>
+<button onclick=' $(".ppAlmacen").fadeOut("slow")'>abrir</button>
+<button onclick=' $(".ppAlmacen").fadeIn("slow");alerting=false;todasPuertasCerradas();'>cerrar</button>
+<button onclick='$(".ppAlmacen").stop()'>STOP</button>
 </div>
+<div>
+<h3>Puerta Ventas</h3>
+<button onclick=' $(".pVentas .ui-slider-range").animate({height: "100%"});$(".pVentas .ui-slider-handle").animate({bottom: "100%"})'>abrir</button>
+<button onclick=' $(".pVentas .ui-slider-range").animate({height: "0"});$(".pVentas .ui-slider-handle").animate({bottom: "0"});alerting=false;todasPuertasCerradas()'>cerrar</button>
+<button onclick=' $(".pVentas .ui-slider-range").stop();$(".pVentas .ui-slider-handle").stop()'>STOP</button>
+</div>
+<div>
+<h3>Puerta Interior</h3>
+<button onclick=' $(".ppInterior").hide()'>abrir</button>
+<button onclick=' $(".ppInterior").show();alerting=false;todasPuertasCerradas()'>cerrar</button>
+</div></div></div>
 </body>
 </html>
