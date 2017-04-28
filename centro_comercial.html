@@ -92,10 +92,12 @@
     pointer-events: none;
 }
 .panelPuertas{
-        position: absolute;
+    position: absolute;
     top: 0;
     background: wheat;
     right: 0;
+    width: 260px;
+    text-align: center;
 }
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
     height: 7rem;
@@ -132,7 +134,14 @@
         /* ESTILOS MENU */
 
         .ui-menu {
-            width: 200px;
+            width: 100%;
+            padding: 0;
+            border-left: 0;
+            margin: auto;
+            border-right: 0;
+        }
+        .ui-menu .ui-menu-item a{
+            padding:2px 0;
         }
 
     </style>
@@ -242,8 +251,7 @@
       animate: "slow",
       min: 0,
       max: 100,
-      value: 60,
-       slide: function( event, ui ) {
+      value: 0, slide: function( event, ui ) {
         todasPuertasCerradas();
       }
     });
