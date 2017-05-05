@@ -310,9 +310,9 @@
     $(".pAlmacen").click(function(){
         if($(".ppAlmacen").css("opacity")== 0||$(".ppAlmacen").css("opacity")== 1 || stoped==true){
         if($(".ppAlmacen").css("display")!="none"){
-    $(".ppAlmacen").fadeOut("slow");}
+    $(".ppAlmacen").fadeOut(1500);}
     else{
-        $(".ppAlmacen").fadeIn("slow");
+        $(".ppAlmacen").fadeIn(1500);
     }
             todasPuertasCerradas();
 stoped=false}
@@ -364,8 +364,8 @@ stoped=false}
         <li>
             <a href="#">Puerta Ventas</a>
             <ul>
-                <li onclick=' $(".pVentas .ui-slider-range").animate({height: "100%"});$(".pVentas .ui-slider-handle").animate({bottom: "100%"});todasPuertasCerradas()'><a href = "#">Abrir</a></li>
-                <li onclick=' $(".pVentas .ui-slider-range").animate({height: "0"});$(".pVentas .ui-slider-handle").animate({bottom: "0"});alerting=false;todasPuertasCerradas()'><a href = "#">Cerrar</a></li>
+                <li onclick=' $(".pVentas .ui-slider-range").animate({height: "100%"}, 1500);$(".pVentas .ui-slider-handle").animate({bottom: "100%"}, 1500);todasPuertasCerradas()'><a href = "#">Abrir</a></li>
+                <li onclick=' $(".pVentas .ui-slider-range").animate({height: "0"}, 1500);$(".pVentas .ui-slider-handle").animate({bottom: "0"}, 1500);alerting=false;todasPuertasCerradas()'><a href = "#">Cerrar</a></li>
                 <li onclick=' $(".pVentas .ui-slider-range").stop();$(".pVentas .ui-slider-handle").stop()'><a href = "#">STOP</a></li>
             </ul>
         </li>
@@ -379,8 +379,8 @@ stoped=false}
         <li>
             <a href="#">Puerta Almacen</a>
             <ul>
-                <li onclick=' $(".ppAlmacen").fadeOut("slow");todasPuertasCerradas()'><a href = "#">Abrir</a></li>
-                <li onclick =' $(".ppAlmacen").fadeIn("slow");alerting=false;todasPuertasCerradas(); '><a href = "#">Cerrar</a></li>
+                <li onclick=' $(".ppAlmacen").fadeOut(1500);todasPuertasCerradas()'><a href = "#">Abrir</a></li>
+                <li onclick =' $(".ppAlmacen").fadeIn(1500);alerting=false;todasPuertasCerradas(); '><a href = "#">Cerrar</a></li>
                 <li onclick =' $(".ppAlmacen").stop()'><a href = "#">STOP</a></li>
             </ul>
         </li>
