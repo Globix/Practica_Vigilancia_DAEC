@@ -29,7 +29,6 @@
             position: relative;
             width: 120px;
             top: 110px;
-            left: -242px;
             z-index: -1;
             padding: 2em 1em;
             display: table;
@@ -52,8 +51,9 @@
             border: solid 1px black;
         }
         #accordion{
-            z-index: 5;
+            width: 590px;
             position:relative;
+            display: inline-block;
         }
         /*ESTILOS ALMACEN*/
         #almacen {
@@ -135,7 +135,7 @@
             width: 260px;
             text-align: center;
         }
-        .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+        #ventas .ui-state-default,#ventas .ui-widget-content .ui-state-default,#ventas .ui-widget-header .ui-state-default {
             height: 7rem;
         }
 
@@ -159,6 +159,7 @@
         #lista_departamentos{
             background: lightpink;
             border: 1px solid #DDDDDD;
+            display: inline-block;
             color: #333333;
             height: 140px;
             width: 160px;
@@ -175,7 +176,7 @@
         }
         /* estos estilos son necesarios dado que jquery le da un height elevadisimo a los li del tab*/
         .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-            height: 2.5rem !important;
+            height: 2.5rem;
         }
         .tabs{
             width: 27rem;
