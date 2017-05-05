@@ -15,6 +15,7 @@
         #centro_comercial{
             width: inherit;
             height: 400px;
+            z-index: -15;
         }
         /*ESTILOS VENTAS*/
         #ventas{
@@ -50,9 +51,13 @@
             background:red;
             border: solid 1px black;
         }
+        #accordion{
+            z-index: 5;
+            position:relative;
+        }
         /*ESTILOS ALMACEN*/
         #almacen {
-                position: relative;
+            position: relative;
             float: left;
             border: solid black 1px;
             width: 49%;
@@ -61,6 +66,7 @@
 
         /*ESTILOS VIGILANTES*/
         .vigilante {
+            z-index: 5;
             display: table;
             vertical-align: middle;
             text-align: center;
@@ -72,8 +78,8 @@
             border: solid 1px black;
             z-index: 2;
             float: left;
+            overflow: visible;
         }
-
         /*ESTILOS SUPERVISOR*/
         #supervisor {
             display: table;
@@ -86,10 +92,13 @@
             background:cornflowerblue;
             border: solid 1px black;
             z-index: 2;
-            float: left;
         }
 
-
+        #acordeonInvisible{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
         /*zarpas ricardeñas metiendo estilos a las puertas*/
         .puerta{
             position: absolute;
@@ -127,7 +136,7 @@
             text-align: center;
         }
         .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-                height: 7rem;
+            height: 7rem;
         }
 
 
@@ -156,6 +165,24 @@
         }
         #lista_departamentos ul{
             padding: 5px;
+        }
+        img{
+            width: 200px;
+            height: 200px;
+            position: relative;
+            display: inline-block;
+            margin-left: 70px;
+        }
+        /* estos estilos son necesarios dado que jquery le da un height elevadisimo a los li del tab*/
+        .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+            height: 2.5rem !important;
+        }
+        .tabs{
+            width: 27rem;
+        }
+        .acordeonInviContain{
+            width:100%;
+            height:50%;
         }
 
         /* ESTILOS MENU */
@@ -200,11 +227,42 @@
     todasPuertasCerradas();
 
         $(function() {
+            //tabs
+            $( function() {
+                $(".tabs").tabs();
+            } );
+            //accordion
+            $("#accordion").accordion({
+                header: "> div > h3"
+            });
             //Draggables
             $( "#supervisor" ).draggable({
-                containment : "#centro_comercial"
+                containment : "#centro_comercial",
+                start: function(){
+                    if((this.classList).contains("enCentro")== false){
+                        $("#acordeonInviSupervisor").append(this);
+                        console.log("entra");
+                        this.className += " enCentro";
+                        this.style.display="table !important";
+                    }
+                    else{
+                        console.log("no entra");
+                    }
+                },
             });
             $( ".vigilante" ).draggable({
+                appendTo: '#centro_comercial',
+                start: function(){
+                    if((this.classList).contains("enCentro")== false){
+                    $("#acordeonInviVigi").append(this);
+                        console.log("entra");
+                        this.className += " enCentro";
+                        this.style.display="table !important";
+                    }
+                    else{
+                        console.log("no entra");
+                    }
+                }
             });
             $( "#lista_departamentos" ).draggable({
                 revert: "valid"
@@ -339,16 +397,31 @@ stoped=false}
 <div id="contenedor">
     <div id="centro_comercial">
         <div id="ventas">
-        <div class="puerta pVentas"></div>
-            <div id = "supervisor">Supervisor</div>
-            <div class="vigilante" vigilando="no">Vigilante</div>
-            <div class="vigilante" vigilando="no">Vigilante</div>
+            <div class="puerta pVentas"></div>
             <div id="punto_vigilancia" contador="0">Punto Vigilancia</div>
             <div id="punto_supervision" contador="0">Punto Supervision</div>
         </div>
         <div id="almacen"><div class="puerta pInterior"><div class="ppInterior"></div></div><div class="puerta pAlmacen"><div class="ppAlmacen"></div></div></div>
     </div>
-
+    <div id="accordion">
+        <div id="acordeonInvisible">
+            <div id="acordeonInviSupervisor" class="acordeonInviContain"></div>
+            <div id="acordeonInviVigi" class="acordeonInviContain"></div>
+        </div>
+        <div class="vigilantes">
+            <h3>supervisores</h3>
+            <div>
+            <div id="supervisor">Supervisor</div>
+            </div>
+        </div>
+        <div class="vigilantes">
+            <h3>vigilantes</h3>
+            <div>
+                <div class="vigilante" vigilando="no">Vigilante</div>
+                <div class="vigilante" vigilando="no">Vigilante</div>
+            </div>
+        </div>
+    </div>
     <div id="lista_departamentos">
         <ul id = "departamentos">
             <li class = "departamento">Alimentacion</li>
@@ -387,6 +460,22 @@ stoped=false}
     </ul>
 
 </div>
+    <div class="tabs">
+        <ul>
+            <li><a href="#tabs-1">Cámara 1</a></li>
+            <li><a href="#tabs-2">Cámara 2</a></li>
+            <li><a href="#tabs-3">Cámara 3</a></li>
+        </ul>
+        <div id="tabs-1">
+            <img src="./imagenes/camara1.jpg">
+        </div>
+        <div id="tabs-2">
+            <img src="./imagenes/camara2.jpg">
+        </div>
+        <div id="tabs-3">
+            <img src="./imagenes/camara3.jpg">
+        </div>
+    </div>
 </div>
 </body>
 </html>
