@@ -173,17 +173,32 @@
 
     </style>
     <script>
+    var comprobarPuestos = function(){
+        setTimeout(function(){
+
+            if(($( "#punto_vigilancia").attr("contador") > 0) && ($( "#punto_supervision").attr("contador") > 0)){
+                document.getElementsByClassName("txtPanelDeMensajes")[1].innerHTML="Todos los puestos estan ocupados";
+            }
+            else {
+                document.getElementsByClassName("txtPanelDeMensajes")[1].innerHTML="";
+            }
+        }, 600);
+    };
+
     var todasPuertasCerradas = function(){
         setTimeout(function(){
 
         if($( ".pVentas .ui-slider-range").css("height").match(/\d+/)[0] < 5  && $(".ppInterior").css("display") == "block" && $(".ppAlmacen").css("display")=="block" && $(".ppAlmacen").css("opacity")=="1"){
-            document.getElementsByClassName("txtPanelDeMensajes")[0].innerHTML="todas las puertas estan cerradas";
+            document.getElementsByClassName("txtPanelDeMensajes")[0].innerHTML="Todas las puertas estan cerradas";
         }
         else {
           document.getElementsByClassName("txtPanelDeMensajes")[0].innerHTML="";
         }
         }, 600);
     };
+
+    todasPuertasCerradas();
+
         $(function() {
             //Draggables
             $( "#supervisor" ).draggable({
@@ -204,12 +219,6 @@
             });
             $( "#punto_vigilancia" ).droppable({
                 tolerance: 'fit',
-                drop: function(event, ui)
-                {
-                    if (ui.draggable.attr('class') != null && ui.draggable.attr('class').includes('vigilante')){
-                        $(this).css("background-color", "green");
-                    }
-                },
                 over: function(event, ui)
                 {
                     // Comprobamos que el elemento es el vigilante.
@@ -221,8 +230,10 @@
                             $(this).attr('contador', incrementoContador);
                         }
 
+                        comprobarPuestos();
+
                         // Ponemos el puesto de vigilancia a verde ya que tenemos vigilantes dentro.
-                        $(this).css("background-color", "green");
+                        $(this).css("background-color", "#ffa0a0");
 
                         // Indicamos el vigilante esta vigilando.
                         $(ui.draggable).attr('vigilando', 'si');
@@ -236,6 +247,8 @@
                             $(this).css("background-color", "red");
                         }
 
+                        comprobarPuestos();
+
                         // Decrementamos en uno el contador ya que despues comprobaremos que todos los vigilantes esten fuera
                         // para volver a poner el puesto de vigilancia a rojo.
                         var incrementoContador = parseInt($(this).attr('contador')) - 1;
@@ -248,19 +261,17 @@
             });
             $( "#punto_supervision" ).droppable({
                 tolerance: 'fit',
-                drop: function(event, ui)
-                {
-                    if (ui.draggable.attr('id') != null && ui.draggable.attr('id').includes('supervisor')){
-                        $(this).css("background-color", "green");
-                    }
-                },
                 over: function(event, ui)
                 {
                     // Comprobamos que el elemento es el supervisor y si es asi ponemos el puesto de supervision
                     // a verde ya que tenemos al supervisor dentro.
                     if (ui.draggable.attr('id') != null && ui.draggable.attr('id').includes('supervisor')){
-                        $(this).css("background-color", "green");
+                        $(this).css("background-color", "#ffa0a0");
                     }
+
+                    $(this).attr('contador', 1);
+
+                    comprobarPuestos();
                 },
                 out: function(event, ui)
                 {
@@ -269,6 +280,10 @@
                     if (ui.draggable.attr('id') != null && ui.draggable.attr('id').includes('supervisor')){
                         $(this).css("background-color", "red");
                     }
+
+                    $(this).attr('contador', 0);
+
+                    comprobarPuestos();
                 }
             });
             $( function() {
@@ -329,7 +344,7 @@ stoped=false}
             <div class="vigilante" vigilando="no">Vigilante</div>
             <div class="vigilante" vigilando="no">Vigilante</div>
             <div id="punto_vigilancia" contador="0">Punto Vigilancia</div>
-            <div id="punto_supervision">Punto Supervision</div>
+            <div id="punto_supervision" contador="0">Punto Supervision</div>
         </div>
         <div id="almacen"><div class="puerta pInterior"><div class="ppInterior"></div></div><div class="puerta pAlmacen"><div class="ppAlmacen"></div></div></div>
     </div>
@@ -342,7 +357,7 @@ stoped=false}
             <li class = "departamento">Ropa</li>
         </ul>
     </div>
-<div class="panelDeMensajes"><h3 class="txtPanelDeMensajes"></h3></div>
+<div class="panelDeMensajes"><h3 class="txtPanelDeMensajes"></h3><h3 class="txtPanelDeMensajes"></h3></div>
 <div class="panelPuertas">
     <h2>Controlador de Puertas</h2>
     <ul id="panel_Puertas">
