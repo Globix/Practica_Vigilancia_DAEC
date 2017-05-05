@@ -254,7 +254,9 @@
             } );
             //accordion
             $("#accordion").accordion({
-                header: "> div > h3"
+                header: "> div > h3",
+                collapsible: true,
+                active: false
             });
             //Draggables
             $( "#supervisor" ).draggable({
@@ -429,7 +431,7 @@ stoped=false}
             <div id="acordeonInviSupervisor" class="acordeonInviContain"></div>
             <div id="acordeonInviVigi" class="acordeonInviContain"></div>
         </div>
-        <div class="vigilantes">
+        <div class="vigilantes" active="false">
             <h3>supervisores</h3>
             <div>
             <div id="supervisor">Supervisor</div>
