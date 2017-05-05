@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Sistema de Vigilancia</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>JS Bin</title>
+
     <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
           rel = "stylesheet">
     <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
@@ -15,6 +17,7 @@
         #centro_comercial{
             width: inherit;
             height: 400px;
+            z-index: -15;
         }
         /*ESTILOS VENTAS*/
         #ventas{
@@ -27,11 +30,11 @@
         #punto_vigilancia {
             position: relative;
             width: 120px;
+            height: 50px;
             top: 110px;
-            left: -242px;
             z-index: -1;
-            padding: 2em 1em;
-            display: table;
+            padding: 0.5em;
+            display: table-cell;
             vertical-align: middle;
             text-align: center;
             background: red;
@@ -39,20 +42,20 @@
         }
         #punto_supervision{
             position: relative;
-            top: 26px;
-            left: 435px;
+            top: 110px;
+            left: 70px;
             z-index: -1;
             width: 120px;
-            padding: 2em 1em;
-            display: table;
-            vertical-align: middle;
-            text-align: center;
-            background:red;
-            border: solid 1px black;
+            height: 50px;
+            padding: 0.5em;
+            display: table-cell; vertical-align: middle; text-align: center; background:red; border: solid 1px black;
+        }
+        #accordion{
+            z-index: 5;
         }
         /*ESTILOS ALMACEN*/
         #almacen {
-                position: relative;
+            position: relative;
             float: left;
             border: solid black 1px;
             width: 49%;
@@ -61,6 +64,7 @@
 
         /*ESTILOS VIGILANTES*/
         .vigilante {
+            z-index: 5;
             display: table;
             vertical-align: middle;
             text-align: center;
@@ -70,10 +74,8 @@
             padding: 0.5em;
             background:orange;
             border: solid 1px black;
-            z-index: 2;
-            float: left;
+            overflow: visible:
         }
-
         /*ESTILOS SUPERVISOR*/
         #supervisor {
             display: table;
@@ -86,7 +88,6 @@
             background:cornflowerblue;
             border: solid 1px black;
             z-index: 2;
-            float: left;
         }
 
 
@@ -123,11 +124,9 @@
             top: 0;
             background: wheat;
             right: 0;
-            width: 260px;
-            text-align: center;
         }
         .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-                height: 7rem;
+            height: 7rem;
         }
 
 
@@ -157,45 +156,54 @@
         #lista_departamentos ul{
             padding: 5px;
         }
-
-        /* ESTILOS MENU */
-
-        .ui-menu {
-            width: 100%;
-            padding: 0;
-            border-left: 0;
-            margin: auto;
-            border-right: 0;
+        img{
+            width: 200px;
+            height: 200px;
+            position: relative;
+            display: inline-block;
+            margin-left: 70px;
         }
-        .ui-menu .ui-menu-item a{
-            padding:2px 0;
+        /* estos estilos son necesarios dado que jquery le da un height elevadisimo a los li del tab*/
+        .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+            height: 2.5rem !important;
         }
-
+        .tabs{
+            width: 27rem;
+        }
     </style>
     <script>
-    var todasPuertasCerradas = function(){
-        setTimeout(function(){
+        var alerting=false;
+        var todasPuertasCerradas = function(){
+            setTimeout(function(){
 
-        if($( ".pVentas .ui-slider-range").css("height").match(/\d+/)[0] < 5  && $(".ppInterior").css("display") == "block" && $(".ppAlmacen").css("display")=="block" && $(".ppAlmacen").css("opacity")=="1"){
-            document.getElementsByClassName("txtPanelDeMensajes")[0].innerHTML="todas las puertas estan cerradas";
+                if($( ".pVentas .ui-slider-range" ).css("height")=="0px" && $(".ppInterior").css("display") == "block" && $(".ppAlmacen").css("display")=="block" && $(".ppAlmacen").css("opacity")=="1" && alerting==false){
+                    alerting=true;
+                    alert("todas las puertas estan cerradas");
+                }}, 600);
         }
-        else {
-          document.getElementsByClassName("txtPanelDeMensajes")[0].innerHTML="";
-        }
-        }, 600);
-    };
         $(function() {
+            //tabs
+            $( function() {
+                $(".tabs").tabs();
+            } );
+            //accordion
+            $("#accordion").accordion({
+                header: "> div > h3"
+            });
             //Draggables
             $( "#supervisor" ).draggable({
                 containment : "#centro_comercial"
             });
             $( ".vigilante" ).draggable({
+                appendTo: '#centro_comercial',
+                stop: function(){
+                    $("#centro_comercial").append(this);
+                }
             });
             $( "#lista_departamentos" ).draggable({
                 revert: "valid"
             });
-            $( ".panelPuertas" ).draggable({
-            });
+
 
             // Droppables
 
@@ -203,7 +211,6 @@
 
             });
             $( "#punto_vigilancia" ).droppable({
-                tolerance: 'fit',
                 drop: function(event, ui)
                 {
                     if (ui.draggable.attr('class') != null && ui.draggable.attr('class').includes('vigilante')){
@@ -244,10 +251,10 @@
                         // Indicamos el vigilante no esta vigilando.
                         $(ui.draggable).attr('vigilando', 'no');
                     }
-                }
+                },
+                tolerance: "pointer"
             });
             $( "#punto_supervision" ).droppable({
-                tolerance: 'fit',
                 drop: function(event, ui)
                 {
                     if (ui.draggable.attr('id') != null && ui.draggable.attr('id').includes('supervisor')){
@@ -269,53 +276,52 @@
                     if (ui.draggable.attr('id') != null && ui.draggable.attr('id').includes('supervisor')){
                         $(this).css("background-color", "red");
                     }
-                }
+                },
+                tolerance: "pointer"
             });
             $( function() {
-    $( ".pVentas" ).slider({
-      orientation: "vertical",
-      range: "min",
-      animate: "slow",
-      min: 0,
-      max: 100,
-      value: 0, slide: function( event, ui ) {
-        todasPuertasCerradas();
-      }
-    });
-    $(".pInterior").click(function(){
-        if($(".ppInterior").css("display")!="none"){
-            $(".ppInterior").hide();}
-        else{
-            $(".ppInterior").show();
-
-        }
-        todasPuertasCerradas();
-    });
-    var stoped= false;
-    $(".pAlmacen").click(function(){
-        if($(".ppAlmacen").css("opacity")== 0||$(".ppAlmacen").css("opacity")== 1 || stoped==true){
-        if($(".ppAlmacen").css("display")!="none"){
-    $(".ppAlmacen").fadeOut("slow");}
-    else{
-        $(".ppAlmacen").fadeIn("slow");
-    }
-            todasPuertasCerradas();
-stoped=false}
-    else{
-        $(".ppAlmacen").stop();
-        stoped=true;
-    }
-});
-  } );
+                $( ".pVentas" ).slider({
+                    orientation: "vertical",
+                    range: "min",
+                    animate: "slow",
+                    min: 0,
+                    max: 100,
+                    value: 60,
+                    slide: function( event, ui ) {
+                        todasPuertasCerradas();
+                        alerting=false;
+                    }
+                });
+                $(".pInterior").click(function(){
+                    alerting=false;
+                    if($(".ppInterior").css("display")!="none"){
+                        $(".ppInterior").hide();}
+                    else{
+                        $(".ppInterior").show();
+                        todasPuertasCerradas();
+                    }
+                });
+                var stoped= false;
+                $(".pAlmacen").click(function(){
+                    alerting=false;
+                    if($(".ppAlmacen").css("opacity")== 0||$(".ppAlmacen").css("opacity")== 1 || stoped==true){
+                        if($(".ppAlmacen").css("display")!="none"){
+                            $(".ppAlmacen").fadeOut("slow");}
+                        else{
+                            $(".ppAlmacen").fadeIn("slow");
+                            todasPuertasCerradas();
+                        }
+                        stoped=false}
+                    else{
+                        $(".ppAlmacen").stop();
+                        stoped=true;
+                    }
+                });
+            } );
 
             //Sortable
             $(function() {
                 $( "#departamentos" ).sortable();
-            });
-
-            //Menu
-            $(function() {
-                $( "#panel_Puertas" ).menu();
             });
         });
     </script>
@@ -324,16 +330,25 @@ stoped=false}
 <div id="contenedor">
     <div id="centro_comercial">
         <div id="ventas">
-        <div class="puerta pVentas"></div>
-            <div id = "supervisor">Supervisor</div>
-            <div class="vigilante" vigilando="no">Vigilante</div>
-            <div class="vigilante" vigilando="no">Vigilante</div>
+            <div class="puerta pVentas"></div>
             <div id="punto_vigilancia" contador="0">Punto Vigilancia</div>
             <div id="punto_supervision">Punto Supervision</div>
         </div>
         <div id="almacen"><div class="puerta pInterior"><div class="ppInterior"></div></div><div class="puerta pAlmacen"><div class="ppAlmacen"></div></div></div>
     </div>
-
+    <div id="accordion">
+        <div class="vigilantes">
+            <h3>supervisores</h3>
+            <div id="supervisor">Supervisor</div>
+        </div>
+        <div class="vigilantes">
+            <h3>vigilantes</h3>
+            <div>
+                <div class="vigilante" vigilando="no">Vigilante</div>
+                <div class="vigilante" vigilando="no">Vigilante</div>
+            </div>
+        </div>
+    </div>
     <div id="lista_departamentos">
         <ul id = "departamentos">
             <li class = "departamento">Alimentacion</li>
@@ -342,36 +357,40 @@ stoped=false}
             <li class = "departamento">Ropa</li>
         </ul>
     </div>
-<div class="panelDeMensajes"><h3 class="txtPanelDeMensajes"></h3></div>
-<div class="panelPuertas">
-    <h2>Controlador de Puertas</h2>
-    <ul id="panel_Puertas">
-        <li>
-            <a href="#">Puerta Ventas</a>
-            <ul>
-                <li onclick=' $(".pVentas .ui-slider-range").animate({height: "100%"});$(".pVentas .ui-slider-handle").animate({bottom: "100%"});todasPuertasCerradas()'><a href = "#">Abrir</a></li>
-                <li onclick=' $(".pVentas .ui-slider-range").animate({height: "0"});$(".pVentas .ui-slider-handle").animate({bottom: "0"});alerting=false;todasPuertasCerradas()'><a href = "#">Cerrar</a></li>
-                <li onclick=' $(".pVentas .ui-slider-range").stop();$(".pVentas .ui-slider-handle").stop()'><a href = "#">STOP</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#">Puerta Interior</a>
-            <ul>
-                <li onclick=' $(".ppInterior").hide();todasPuertasCerradas()'><a href = "#">Abrir</a></li>
-                <li onclick=' $(".ppInterior").show();alerting=false;todasPuertasCerradas()'><a href = "#">Cerrar</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#">Puerta Almacen</a>
-            <ul>
-                <li onclick=' $(".ppAlmacen").fadeOut("slow");todasPuertasCerradas()'><a href = "#">Abrir</a></li>
-                <li onclick =' $(".ppAlmacen").fadeIn("slow");alerting=false;todasPuertasCerradas(); '><a href = "#">Cerrar</a></li>
-                <li onclick =' $(".ppAlmacen").stop()'><a href = "#">STOP</a></li>
-            </ul>
-        </li>
-    </ul>
-
-</div>
+    <div class="panelPuertas"><h2>Controlador de Puertas</h2>
+        <div>
+            <h3>Puerta Almacen</h3>
+            <button onclick=' $(".ppAlmacen").fadeOut("slow")'>abrir</button>
+            <button onclick=' $(".ppAlmacen").fadeIn("slow");alerting=false;todasPuertasCerradas();'>cerrar</button>
+            <button onclick='$(".ppAlmacen").stop()'>STOP</button>
+        </div>
+        <div>
+            <h3>Puerta Ventas</h3>
+            <button onclick=' $(".pVentas .ui-slider-range").animate({height: "100%"});$(".pVentas .ui-slider-handle").animate({bottom: "100%"})'>abrir</button>
+            <button onclick=' $(".pVentas .ui-slider-range").animate({height: "0"});$(".pVentas .ui-slider-handle").animate({bottom: "0"});alerting=false;todasPuertasCerradas()'>cerrar</button>
+            <button onclick=' $(".pVentas .ui-slider-range").stop();$(".pVentas .ui-slider-handle").stop()'>STOP</button>
+        </div>
+        <div>
+            <h3>Puerta Interior</h3>
+            <button onclick=' $(".ppInterior").hide()'>abrir</button>
+            <button onclick=' $(".ppInterior").show();alerting=false;todasPuertasCerradas()'>cerrar</button>
+        </div></div>
+    <div class="tabs">
+        <ul>
+            <li><a href="#tabs-1">Cámara 1</a></li>
+            <li><a href="#tabs-2">Cámara 2</a></li>
+            <li><a href="#tabs-3">Cámara 3</a></li>
+        </ul>
+        <div id="tabs-1">
+            <img src="./imagenes/camara1.jpg">
+        </div>
+        <div id="tabs-2">
+            <img src="./imagenes/camara2.jpg">
+        </div>
+        <div id="tabs-3">
+            <img src="./imagenes/camara3.jpg">
+        </div>
+    </div>
 </div>
 </body>
 </html>
