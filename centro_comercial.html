@@ -196,8 +196,16 @@
             });
             $( ".vigilante" ).draggable({
                 appendTo: '#centro_comercial',
-                stop: function(){
+                start: function(){
+                    if((this.classList).contains("enCentro")== false){
                     $("#centro_comercial").append(this);
+                        console.log("entra");
+                        this.className += " enCentro";
+                        this.style.display="table !important";
+                    }
+                    else{
+                        console.log("no entra");
+                    }
                 }
             });
             $( "#lista_departamentos" ).draggable({
