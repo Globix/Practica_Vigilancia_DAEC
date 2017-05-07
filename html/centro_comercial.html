@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Vigilancia</title>
+
+    <!-- Importaciones necesarias para Jquery -->
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel = "stylesheet">
+
+    <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+    <!-- Importaciones de nuestro CSS y Javascript para la página -->
+    <link rel="stylesheet" type="text/css" href="../css/estilos.css">
+    <script type="text/javascript" src="../js/comportamiento.js"></script>
+</head>
+<body>
+<div id="contenedor">
+    <div id="centro_comercial">
+        <div id="ventas">
+            <div class="puerta pVentas"></div>
+            <div id="punto_vigilancia" contador="0">Punto Vigilancia</div>
+            <div id="punto_supervision" contador="0">Punto Supervision</div>
+        </div>
+        <div id="almacen"><div class="puerta pInterior"><div class="ppInterior"></div></div><div class="puerta pAlmacen"><div class="ppAlmacen"></div></div></div>
+    </div>
+    <div id="accordion">
+        <div id="acordeonInvisible">
+            <div id="acordeonInviSupervisor" class="acordeonInviContain"></div>
+            <div id="acordeonInviVigi" class="acordeonInviContain"></div>
+        </div>
+        <div class="vigilantes" active="false">
+            <h3>supervisores</h3>
+            <div>
+            <div id="supervisor">Supervisor</div>
+            </div>
+        </div>
+        <div class="vigilantes">
+            <h3>vigilantes</h3>
+            <div>
+                <div class="vigilante" vigilando="no">Vigilante</div>
+                <div class="vigilante" vigilando="no">Vigilante</div>
+            </div>
+        </div>
+    </div>
+    <div id="lista_departamentos">
+        <ul id = "departamentos">
+            <li class = "departamento">Alimentacion</li>
+            <li class = "departamento">Limpieza</li>
+            <li class = "departamento">Electronica</li>
+            <li class = "departamento">Ropa</li>
+        </ul>
+    </div>
+<div class="panelDeMensajes"><h3 class="txtPanelDeMensajes"></h3><h3 class="txtPanelDeMensajes"></h3></div>
+<div class="panelPuertas">
+    <h2>Controlador de Puertas</h2>
+    <ul id="panel_Puertas">
+        <li>
+            <a href="#">Puerta Ventas</a>
+            <ul>
+                <li onclick=' $(".pVentas .ui-slider-range").animate({height: "100%"}, 2000);$(".pVentas .ui-slider-handle").animate({bottom: "100%"}, 2000);todasPuertasCerradas()'><a href = "#">Abrir</a></li>
+                <li onclick=' $(".pVentas .ui-slider-range").animate({height: "0"}, 2000);$(".pVentas .ui-slider-handle").animate({bottom: "0"}, 2000);alerting=false;todasPuertasCerradas()'><a href = "#">Cerrar</a></li>
+                <li onclick=' $(".pVentas .ui-slider-range").stop();$(".pVentas .ui-slider-handle").stop()'><a href = "#">STOP</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Puerta Interior</a>
+            <ul>
+                <li onclick=' $(".ppInterior").hide();todasPuertasCerradas()'><a href = "#">Abrir</a></li>
+                <li onclick=' $(".ppInterior").show();alerting=false;todasPuertasCerradas()'><a href = "#">Cerrar</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Puerta Almacen</a>
+            <ul>
+                <li onclick=' $(".ppAlmacen").fadeOut(2000);todasPuertasCerradas()'><a href = "#">Abrir</a></li>
+                <li onclick =' $(".ppAlmacen").fadeIn(2000);alerting=false;todasPuertasCerradas(); '><a href = "#">Cerrar</a></li>
+                <li onclick =' $(".ppAlmacen").stop()'><a href = "#">STOP</a></li>
+            </ul>
+        </li>
+    </ul>
+
+</div>
+    <div class="tabs">
+        <ul>
+            <li><a href="#tabs-1">Cámara 1</a></li>
+            <li><a href="#tabs-2">Cámara 2</a></li>
+            <li><a href="#tabs-3">Cámara 3</a></li>
+        </ul>
+        <div id="tabs-1">
+            <img src="../imagenes/camara1.jpg">
+        </div>
+        <div id="tabs-2">
+            <img src="../imagenes/camara2.jpg">
+        </div>
+        <div id="tabs-3">
+            <img src="../imagenes/camara3.jpg">
+        </div>
+    </div>
+</div>
+</body>
+</html>

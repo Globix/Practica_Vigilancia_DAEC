@@ -1,0 +1,210 @@
+#contenedor {
+    width: 1200px;
+    height: 900px;
+}
+#centro_comercial{
+    width: inherit;
+    height: 400px;
+    z-index: -15;
+}
+/*ESTILOS VENTAS*/
+#ventas{
+    float: left;
+    position: relative;
+    border: solid black 1px;
+    width: 49%;
+    height: 400px;
+}
+#punto_vigilancia {
+    position: relative;
+    width: 120px;
+    top: 110px;
+    z-index: -1;
+    padding: 2em 1em;
+    display: table;
+    vertical-align: middle;
+    text-align: center;
+    background: red;
+    border: solid 1px black;
+}
+#punto_supervision{
+    position: relative;
+    top: 26px;
+    left: 435px;
+    z-index: -1;
+    width: 120px;
+    padding: 2em 1em;
+    display: table;
+    vertical-align: middle;
+    text-align: center;
+    background:red;
+    border: solid 1px black;
+}
+#accordion{
+    width: 590px;
+    position:relative;
+    display: inline-block;
+}
+/*ESTILOS ALMACEN*/
+#almacen {
+    position: relative;
+    float: left;
+    border: solid black 1px;
+    width: 49%;
+    height: 400px;
+}
+
+/*ESTILOS VIGILANTES*/
+.vigilante {
+    z-index: 5;
+    display: table;
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 100px;
+    width: 25px;
+    height: 20px;
+    padding: 0.5em;
+    background:orange;
+    border: solid 1px black;
+    z-index: 2;
+    float: left;
+    overflow: visible;
+}
+/*ESTILOS SUPERVISOR*/
+#supervisor {
+    display: table;
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 100px;
+    width: 25px;
+    height: 20px;
+    padding: 0.5em;
+    background:cornflowerblue;
+    border: solid 1px black;
+    z-index: 2;
+}
+
+#acordeonInvisible{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+/*zarpas ricardeñas metiendo estilos a las puertas*/
+.puerta{
+    position: absolute;
+    display: inline-block;
+    min-width: 1rem;
+    min-height: 5rem;
+    background: #f6a828;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+
+}
+.pInterior {
+    left: -9px;
+    bottom: 5rem;
+}
+.pVentas {
+    left: -6px;
+    bottom: 5rem;
+}
+.pAlmacen {
+    right: -15px;
+    bottom: 5rem;
+}
+.ppAlmacen,.ppInterior{
+    background: black;
+    min-width: 5px;
+    min-height: 5rem;
+    pointer-events: none;
+}
+.panelPuertas{
+    position: absolute;
+    top: 0;
+    background: wheat;
+    right: 0;
+    width: 260px;
+    text-align: center;
+}
+#ventas .ui-state-default,#ventas .ui-widget-content .ui-state-default,#ventas .ui-widget-header .ui-state-default {
+    height: 7rem;
+}
+
+
+/*ESTILOS SORTABLE*/
+
+#departamentos {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+#departamentos li {
+    padding: 0.4em;
+    padding-left: 1.5em;
+}
+.departamento {
+    background: #cedc98;
+    border: 1px solid #DDDDDD;
+    color: #333333;
+}
+.panelDeMensajes {
+    background: black;
+    width: 400px;
+    padding: 2rem;
+    min-height: 100px;
+    border: 5px solid brown;
+    display: inline-block;
+}
+.txtPanelDeMensajes {
+    color: #64ff00;
+}
+#lista_departamentos{
+    background: lightpink;
+    border: 1px solid #DDDDDD;
+    display: inline-block;
+    color: #333333;
+    height: 140px;
+    width: 160px;
+}
+#lista_departamentos ul{
+    padding: 5px;
+}
+img{
+    width: 200px;
+    height: 200px;
+    position: relative;
+    display: inline-block;
+    margin-left: 70px;
+}
+/* estos estilos son necesarios dado que jquery le da un height elevadisimo a los li del tab*/
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    height: 2.5rem;
+}
+.tabs{
+    width: 27rem;
+}
+.acordeonInviContain{
+    width:100%;
+    height:50%;
+}
+
+/* ESTILOS MENU */
+
+.ui-menu {
+    width: 100%;
+    padding: 0;
+    border-left: 0;
+    margin: auto;
+    border-right: 0;
+}
+.ui-menu .ui-menu-item a{
+    padding:2px 0;
+}
+
+#ventas .ui-state-default{
+    background: black;
+    border-radius: 0;
+    border: black;
+    width: 1rem;
+    left: 0.1px;
+}
